@@ -1,55 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import moment from 'moment';
-import Modal from 'react-modal';
-import DateTimePicker from 'react-datetime-picker';
-import Swal from 'sweetalert2';
-import { useDispatch, useSelector } from 'react-redux';
-import { uiCloseModal } from '../../actions/ui';
+import React, { useEffect, useState } from 'react'
+import moment from 'moment'
+import Modal from 'react-modal'
+import DateTimePicker from 'react-datetime-picker'
+import Swal from 'sweetalert2'
+import { useDispatch, useSelector } from 'react-redux'
+import { uiCloseModal } from '../../actions/ui'
 import {
   eventClearActive,
   eventStartAddNew,
-  eventStartUpdate,
-} from '../../actions/events';
+  eventStartUpdate
+} from '../../actions/events'
 
-const now = moment().minutes(0).seconds(0).add(1, 'hours');
-const later = now.clone().add(1, 'hour');
+const now = moment().minutes(0).seconds(0).add(1, 'hours')
+const later = now.clone().add(1, 'hour')
 
 const initEvent = {
   title: '',
   notes: '',
   start: now.toDate(),
-  end: later.toDate(),
-};
+  end: later.toDate()
+}
 
 export const CalendarModal = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const { modalOpen } = useSelector((state) => state.ui);
-  const { activeEvent } = useSelector((state) => state.calendar);
+  const { modalOpen } = useSelector((state) => state.ui)
+  const { activeEvent } = useSelector((state) => state.calendar)
 
-  const [dateStart, setDateStart] = useState(now.toDate());
-  const [dateEnd, setDateEnd] = useState(later.toDate());
+  const [dateStart, setDateStart] = useState(now.toDate())
+  const [dateEnd, setDateEnd] = useState(later.toDate())
 
-  const [titleValid, setTitleValid] = useState(true);
+  const [titleValid, setTitleValid] = useState(true)
 
-  const [formValues, setFormValues] = useState(initEvent);
+  const [formValues, setFormValues] = useState(initEvent)
 
-  const { title, notes, start, end } = formValues;
+  const { title, notes, start, end } = formValues
 
   useEffect(() => {
     if (activeEvent) {
-      setFormValues(activeEvent);
+      setFormValues(activeEvent)
     } else {
-      setFormValues(initEvent);
+      setFormValues(initEvent)
     }
-  }, [activeEvent, setFormValues]);
+  }, [activeEvent, setFormValues])
 
   const handleInputChange = ({ target }) => {
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
-    });
-  };
+      [target.name]: target.value
+    })
+  }
 
   const customStyles = {
     content: {
@@ -58,62 +58,62 @@ export const CalendarModal = () => {
       right: 'auto',
       bottom: 'auto',
       marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
+      transform: 'translate(-50%, -50%)'
+    }
+  }
 
   if (process.env.NODE_ENV !== 'test') {
-    Modal.setAppElement('#root');
+    Modal.setAppElement('#root')
   }
 
   const closeModal = () => {
-    dispatch(uiCloseModal());
-    dispatch(eventClearActive());
-    setFormValues(initEvent);
-  };
+    dispatch(uiCloseModal())
+    dispatch(eventClearActive())
+    setFormValues(initEvent)
+  }
 
   const handleStartDateChange = (e) => {
-    setDateStart(e);
+    setDateStart(e)
     setFormValues({
       ...formValues,
-      start: e,
-    });
-  };
+      start: e
+    })
+  }
 
   const handleEndDateChange = (e) => {
-    setDateEnd(e);
+    setDateEnd(e)
     setFormValues({
       ...formValues,
-      end: e,
-    });
-  };
+      end: e
+    })
+  }
 
   const handleSubmitForm = (e) => {
-    e.preventDefault();
-    const momentStart = moment(start);
-    const momentEnd = moment(end);
+    e.preventDefault()
+    const momentStart = moment(start)
+    const momentEnd = moment(end)
 
     if (momentStart.isSameOrAfter(momentEnd)) {
       return Swal.fire({
         title: 'Error!',
         text: 'La fecha fin debe ser mayor a la de inicio',
-        icon: 'error',
-      });
+        icon: 'error'
+      })
     }
 
     if (title.trim().length < 2) {
-      return setTitleValid(false);
+      return setTitleValid(false)
     }
 
     if (activeEvent) {
-      dispatch(eventStartUpdate(formValues));
+      dispatch(eventStartUpdate(formValues))
     } else {
-      dispatch(eventStartAddNew(formValues));
+      dispatch(eventStartAddNew(formValues))
     }
 
-    setTitleValid(true);
-    closeModal();
-  };
+    setTitleValid(true)
+    closeModal()
+  }
 
   return (
     <Modal
@@ -121,70 +121,70 @@ export const CalendarModal = () => {
       // onAfterOpen={afterOpenModal}
       onRequestClose={closeModal}
       style={customStyles}
-      contentLabel="Example Modal"
-      className="modal"
-      overlayClassName="modal-fondo"
+      contentLabel='Example Modal'
+      className='modal'
+      overlayClassName='modal-fondo'
       closeTimeoutMS={200}
     >
       <h1> {activeEvent ? 'Editar Evento' : 'Nuevo evento'} </h1>
       <hr />
-      <form className="container" onSubmit={handleSubmitForm}>
-        <div className="form-group">
+      <form className='container' onSubmit={handleSubmitForm}>
+        <div className='form-group'>
           <label>Fecha y hora inicio</label>
           <DateTimePicker
             onChange={handleStartDateChange}
             value={dateStart}
-            className="form-control"
+            className='form-control'
           />
         </div>
 
-        <div className="form-group">
+        <div className='form-group'>
           <label>Fecha y hora fin</label>
           <DateTimePicker
             onChange={handleEndDateChange}
             value={dateEnd}
-            className="form-control"
+            className='form-control'
             minDate={dateStart}
           />
         </div>
 
         <hr />
-        <div className="form-group">
+        <div className='form-group'>
           <label>Titulo y notas</label>
           <input
-            type="text"
+            type='text'
             className={`form-control ${titleValid && 'is-invalid'}`}
-            placeholder="Título del evento"
-            name="title"
+            placeholder='Título del evento'
+            name='title'
             value={title}
             onChange={handleInputChange}
-            autoComplete="off"
+            autoComplete='off'
           />
-          <small id="emailHelp" className="form-text text-muted">
+          <small id='emailHelp' className='form-text text-muted'>
             Una descripción corta
           </small>
         </div>
 
-        <div className="form-group">
+        <div className='form-group'>
           <textarea
-            type="text"
-            className="form-control"
-            placeholder="Notas"
-            rows="5"
-            name="notes"
+            type='text'
+            className='form-control'
+            placeholder='Notas'
+            rows='5'
+            name='notes'
             value={notes}
             onChange={handleInputChange}
-          ></textarea>
-          <small id="emailHelp" className="form-text text-muted">
+          />
+          <small id='emailHelp' className='form-text text-muted'>
             Información adicional
           </small>
         </div>
 
-        <button type="submit" className="btn btn-outline-primary btn-block">
-          <i className="far fa-save"></i>
+        <button type='submit' className='btn btn-outline-primary btn-block'>
+          <i className='far fa-save' />
           <span> Guardar</span>
         </button>
       </form>
     </Modal>
-  );
-};
+  )
+}

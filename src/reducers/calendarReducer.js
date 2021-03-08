@@ -1,4 +1,4 @@
-import { types } from '../types/types';
+import { types } from '../types/types'
 
 //  {
 //       id: new Date().getTime(),
@@ -14,36 +14,36 @@ import { types } from '../types/types';
 
 const initState = {
   events: [],
-  activeEvent: null,
-};
+  activeEvent: null
+}
 
 export const calendarReducer = (state = initState, action) => {
   switch (action.type) {
     case types.eventSetActive:
       return {
         ...state,
-        activeEvent: action.payload,
-      };
+        activeEvent: action.payload
+      }
 
     case types.eventAddNew:
       return {
         ...state,
-        events: [...state.events, action.payload],
-      };
+        events: [...state.events, action.payload]
+      }
 
     case types.eventClearActive:
       return {
         ...state,
-        activeEvent: null,
-      };
+        activeEvent: null
+      }
 
     case types.eventUpdated:
       return {
         ...state,
         events: state.events.map((event) =>
           event.id === action.payload.id ? action.payload : event
-        ),
-      };
+        )
+      }
 
     case types.eventDeleted:
       return {
@@ -51,20 +51,20 @@ export const calendarReducer = (state = initState, action) => {
         events: state.events.filter(
           (event) => event.id !== state.activeEvent.id
         ),
-        activeEvent: null,
-      };
+        activeEvent: null
+      }
 
     case types.eventLoaded:
       return {
         ...state,
-        events: [...action.payload],
-      };
+        events: [...action.payload]
+      }
 
     case types.eventLogout:
       return {
-        ...initState,
-      };
+        ...initState
+      }
     default:
-      return state;
+      return state
   }
-};
+}

@@ -1,4 +1,4 @@
-import { types } from '../../types/types';
+import { types } from '../../types/types'
 
 describe('pruebas a los types', () => {
   test('los objetos types deben ser iguales', () => {
@@ -20,7 +20,7 @@ describe('pruebas a los types', () => {
       authLogin: '[auth] Login',
       authStartRegister: '[auth] Start register',
       authStartTokenRenew: '[auth] Start token renew',
-      authLogout: '[auth] Logout',
-    });
-  });
-});
+      authLogout: '[auth] Logout'
+    })
+  })
+})

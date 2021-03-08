@@ -1,24 +1,24 @@
-import { types } from '../types/types';
+import { types } from '../types/types'
 
 const initState = {
-  modalOpen: false,
-};
+  modalOpen: false
+}
 
 export const uiReducer = (state = initState, action) => {
   switch (action.type) {
     case types.uiOpenModal:
       return {
         ...state,
-        modalOpen: true,
-      };
+        modalOpen: true
+      }
 
     case types.uiCloseModal:
       return {
         ...state,
-        modalOpen: false,
-      };
+        modalOpen: false
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}

@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
 export const CalendarEvent = ({ event }) => {
   const {
     title,
-    user: { name },
-  } = event;
+    user: { name }
+  } = event
 
   return (
     <div>
       <strong>{title}</strong>
       <span> - {name}</span>
     </div>
-  );
-};
+  )
+}
